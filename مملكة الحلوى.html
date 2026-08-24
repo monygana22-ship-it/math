@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مملكة الحلوى والرياضيات | عالم ندى التعليمي</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:"Segoe UI",Tahoma,Arial,sans-serif;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 12% 12%,#fff 0 4px,transparent 5px),
+        radial-gradient(circle at 82% 22%,#fff 0 5px,transparent 6px),
+        radial-gradient(circle at 65% 75%,rgba(255,255,255,.7) 0 4px,transparent 5px),
+        linear-gradient(180deg,#65dced 0%,#8de8d0 45%,#ffe38c 100%);
+    background-size:130px 130px,180px 180px,150px 150px,100% 100%;
+    overflow-x:hidden;
+}
+
+.game{
+    width:95%;
+    max-width:760px;
+    margin:20px auto;
+    background:rgba(255,255,255,.97);
+    border:7px solid #fff;
+    border-radius:35px;
+    box-shadow:0 18px 45px rgba(70,35,80,.28);
+    overflow:hidden;
+}
+
+.header{
+    position:relative;
+    text-align:center;
+    color:white;
+    padding:20px;
+    background:linear-gradient(180deg,#ff70bb,#ff99ce);
+    border-bottom:5px solid #dd3d90;
+}
+
+.brand{
+    font-size:14px;
+    font-weight:bold;
+}
+
+.header h1{
+    font-size:29px;
+    margin:5px 0;
+    text-shadow:0 3px 0 #d23988;
+}
+
+.header p{
+    font-size:14px;
+}
+
+.music{
+    position:absolute;
+    top:15px;
+    left:15px;
+    width:45px;
+    height:45px;
+    border:3px solid white;
+    border-radius:50%;
+    background:#e74498;
+    color:white;
+    font-size:21px;
+    cursor:pointer;
+}
+
+.screen{
+    display:none;
+}
+
+.screen.active{
+    display:block;
+}
+
+/* شاشة البداية */
+
+.start{
+    text-align:center;
+    padding:35px 25px 45px;
+}
+
+.candies{
+    font-size:75px;
+    animation:bounce 2s infinite;
+}
+
+@keyframes bounce{
+    0%,100%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(-12px);
+    }
+}
+
+.start h2{
+    color:#992673;
+    font-size:29px;
+    margin:15px 0;
+}
+
+.start p{
+    color:#665363;
+    font-size:18px;
+    line-height:1.8;
+}
+
+.start-btn,
+.restart-btn{
+    margin-top:25px;
+    border:0;
+    padding:16px 45px;
+    border-radius:50px;
+    background:linear-gradient(180deg,#ff6db7,#e73591);
+    color:white;
+    font-size:20px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:
+        0 7px 0 #b6256e,
+        0 10px 20px rgba(190,40,120,.3);
+}
+
+.start-btn:active,
+.restart-btn:active{
+    transform:translateY(5px);
+    box-shadow:0 2px 0 #b6256e;
+}
+
+/* الخريطة */
+
+.map{
+    padding:25px 20px 40px;
+    background:linear-gradient(#fffaff,#f3fcff);
+}
+
+.map-title{
+    text-align:center;
+    color:#91256f;
+    font-size:24px;
+    font-weight:bold;
+    margin-bottom:25px;
+}
+
+.map-subtitle{
+    text-align:center;
+    color:#816477;
+    margin-bottom:25px;
+}
+
+.levels{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:22px 8px;
+    max-width:650px;
+    margin:auto;
+}
+
+.level{
+    width:68px;
+    height:68px;
+    margin:auto;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:20px;
+    font-weight:bold;
+    background:linear-gradient(145deg,#ff82c2,#e53b91);
+    border:5px solid white;
+    box-shadow:
+        0 6px 0 #b62b72,
+        0 8px 15px rgba(150,40,100,.25);
+    position:relative;
+}
+
+.level.locked{
+    background:linear-gradient(145deg,#c9c9d4,#9999a6);
+    box-shadow:0 5px 0 #777783;
+}
+
+.level.completed{
+    background:linear-gradient(145deg,#ffdc52,#ffae22);
+    box-shadow:0 6px 0 #d77f12;
+}
+
+.level.completed:after{
+    content:"⭐";
+    position:absolute;
+    top:-18px;
+    right:-12px;
+    font-size:25px;
+}
+
+.level.current{
+    animation:pulse 1.2s infinite;
+}
+
+@keyframes pulse{
+    0%,100%{
+        transform:scale(1);
+    }
+    50%{
+        transform:scale(1.1);
+    }
+}
+
+/* الاختبار */
+
+.quiz{
+    padding:20px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:9px;
+    margin-bottom:15px;
+}
+
+.stat{
+    background:white;
+    border:3px solid #f2c8df;
+    border-radius:17px;
+    padding:9px 5px;
+    text-align:center;
+    color:#8b3975;
+    font-weight:bold;
+}
+
+.hearts{
+    letter-spacing:2px;
+}
+
+.progress-wrap{
+    height:15px;
+    background:#e7e0e9;
+    border-radius:20px;
+    overflow:hidden;
+    margin-bottom:20px;
+}
+
+.progress{
+    height:100%;
+    width:0;
+    background:linear-gradient(
+        90deg,
+        #ffd34c,
+        #ff913c,
+        #ff4da6
+    );
+    transition:.5s;
+}
+
+/* السؤال */
+
+.question-card{
+    background:white;
+    border:4px solid #f0c4df;
+    border-radius:27px;
+    padding:22px 18px;
+    text-align:center;
+    box-shadow:0 7px 18px rgba(100,50,100,.1);
+}
+
+.level-label{
+    display:inline-block;
+    background:#ffe3f2;
+    color:#a12876;
+    border-radius:30px;
+    padding:6px 18px;
+    font-weight:bold;
+    margin-bottom:13px;
+}
+
+.question{
+    font-size:22px;
+    font-weight:bold;
+    color:#4d2c4b;
+    line-height:1.8;
+}
+
+/* الاختيارات */
+
+.options{
+    display:grid;
+    gap:12px;
+    margin-top:18px;
+}
+
+.option{
+    width:100%;
+    border:4px solid #efd6e6;
+    border-radius:20px;
+    background:white;
+    padding:14px;
+    color:#65385f;
+    font-size:19px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 4px 0 #dec4d7;
+    transition:.2s;
+}
+
+.option:hover{
+    transform:translateY(-2px);
+    border-color:#ff72b9;
+    background:#fff4fa;
+}
+
+.option.correct{
+    background:#d9fae6;
+    border-color:#36bc70;
+    box-shadow:0 4px 0 #218e51;
+    color:#16743f;
+    animation:correctPop .4s;
+}
+
+.option.wrong{
+    background:#ffe0e7;
+    border-color:#ed5876;
+    box-shadow:0 4px 0 #c43855;
+    color:#b52f49;
+    animation:shake .35s;
+}
+
+@keyframes correctPop{
+    50%{
+        transform:scale(1.04);
+    }
+}
+
+@keyframes shake{
+    25%{
+        transform:translateX(8px);
+    }
+    50%{
+        transform:translateX(-8px);
+    }
+    75%{
+        transform:translateX(5px);
+    }
+}
+
+.option:disabled{
+    cursor:default;
+}
+
+/* الرسائل */
+
+.feedback{
+    display:none;
+    margin-top:15px;
+    padding:15px;
+    border-radius:20px;
+    text-align:center;
+    font-size:17px;
+    font-weight:bold;
+    line-height:1.7;
+}
+
+.feedback.show{
+    display:block;
+}
+
+.feedback.good{
+    background:#e2faec;
+    color:#168148;
+    border:2px solid #82dba8;
+}
+
+.feedback.bad{
+    background:#fff0f3;
+    color:#c13c59;
+    border:2px solid #f2a3b4;
+}
+
+/* زر التالي */
+
+.next{
+    display:none;
+    width:100%;
+    margin-top:14px;
+    border:0;
+    padding:15px;
+    border-radius:18px;
+    background:linear-gradient(180deg,#ff70b9,#e73c92);
+    color:white;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 5px 0 #b62870;
+}
+
+.next.show{
+    display:block;
+}
+
+/* النتيجة */
+
+.result{
+    text-align:center;
+    padding:40px 25px;
+}
+
+.trophy{
+    font-size:90px;
+    animation:trophy .7s infinite alternate;
+}
+
+@keyframes trophy{
+    from{
+        transform:rotate(-5deg);
+    }
+    to{
+        transform:rotate(5deg);
+    }
+}
+
+.result h2{
+    color:#972773;
+    font-size:30px;
+    margin:15px;
+}
+
+.final-stars{
+    font-size:38px;
+    margin:15px;
+}
+
+.final-score{
+    font-size:48px;
+    font-weight:bold;
+    color:#ef4d9b;
+}
+
+.result p{
+    color:#655463;
+    font-size:18px;
+    line-height:1.8;
+}
+
+@media(max-width:600px){
+
+    .game{
+        width:97%;
+        margin:10px auto;
+        border-width:4px;
+    }
+
+    .header h1{
+        font-size:24px;
+    }
+
+    .levels{
+        gap:15px 4px;
+    }
+
+    .level{
+        width:55px;
+        height:55px;
+        font-size:16px;
+        border-width:4px;
+    }
+
+    .question{
+        font-size:18px;
+    }
+
+    .option{
+        font-size:17px;
+    }
+
+    .candies{
+        font-size:65px;
+    }
+
+    .stats{
+        font-size:13px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="game">
+
+<header class="header">
+
+<button class="music" id="musicBtn" onclick="toggleMusic()">
+🔊
+</button>
+
+<div class="brand">
+✨ عالم ندى التعليمي ✨
+</div>
+
+<h1>
+🍬 مملكة الحلوى والرياضيات 🍭
+</h1>
+
+<p>
+مغامرة تمهيدية للصف الرابع الابتدائي
+</p>
+
+</header>
+
+
+<!-- =========================
+     البداية
+========================= -->
+
+<section class="screen active" id="startScreen">
+
+<div class="start">
+
+<div class="candies">
+🍭 🍬 🍫
+</div>
+
+<h2>
+هل أنتِ مستعدة للمغامرة؟ 👑
+</h2>
+
+<p>
+أمامكِ <strong>15 مستوى</strong> من تحديات الرياضيات
+الممتعة! 🌈
+</p>
+
+<p>
+القيمة المكانية والعددية،
+الصيغة اللفظية والممتدة،
+والجمع والطرح والضرب والقسمة.
+</p>
+
+<button class="start-btn" onclick="startGame()">
+🍬 ابدئي المغامرة
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     الخريطة
+========================= -->
+
+<section class="screen" id="mapScreen">
+
+<div class="map">
+
+<div class="map-title">
+🗺️ خريطة مملكة الحلوى
+</div>
+
+<div class="map-subtitle">
+اجتازي المستويات وافتحي طريقك إلى الكنز! 🍬
+</div>
+
+<div class="levels" id="levels"></div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     الاختبار
+========================= -->
+
+<section class="screen" id="quizScreen">
+
+<div class="quiz">
+
+<div class="stats">
+
+<div class="stat">
+🍬 المستوى
+<br>
+<span id="levelNumber">1</span>/15
+</div>
+
+<div class="stat">
+⭐ النقاط
+<br>
+<span id="score">0</span>
+</div>
+
+<div class="stat">
+<span class="hearts" id="hearts">
+❤️❤️❤️
+</span>
+<br>
+المحاولات
+</div>
+
+</div>
+
+<div class="progress-wrap">
+
+<div class="progress" id="progress"></div>
+
+</div>
+
+
+<div class="question-card">
+
+<div class="level-label">
+🍭 تحدي الحلوى
+</div>
+
+<div class="question" id="question">
+جاري تحميل السؤال...
+</div>
+
+</div>
+
+
+<div class="options" id="options"></div>
+
+<div class="feedback" id="feedback"></div>
+
+<button class="next" id="nextBtn" onclick="nextQuestion()">
+🍬 المستوى التالي
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     النتيجة
+========================= -->
+
+<section class="screen" id="resultScreen">
+
+<div class="result">
+
+<div class="trophy">
+🏆
+</div>
+
+<h2 id="resultTitle"></h2>
+
+<div class="final-stars" id="finalStars"></div>
+
+<div class="final-score">
+<span id="finalScore">0</span> / 150
+</div>
+
+<p id="resultText"></p>
+
+<button class="restart-btn" onclick="restartGame()">
+🔄 إعادة المغامرة
+</button>
+
+</div>
+
+</section>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   الأسئلة
+===================================================== */
+
+const questions = [
+
+/* 1 */
+
+{
+    q:"ما القيمة المكانية للرقم 6 في العدد 6,324؟",
+
+    o:[
+        "الآحاد",
+        "المئات",
+        "الآلاف"
+    ],
+
+    a:"الآلاف"
+},
+
+/* 2 */
+
+{
+    q:"ما القيمة العددية للرقم 7 في العدد 4,735؟",
+
+    o:[
+        "7",
+        "70",
+        "700"
+    ],
+
+    a:"700"
+},
+
+/* 3 */
+
+{
+    q:"أي صيغة لفظية تمثل العدد 3,245؟",
+
+    o:[
+        "ثلاثة آلاف ومئتان وخمسة وأربعون",
+        "ثلاثة آلاف ومئتان وخمسة وعشرون",
+        "ثلاثة آلاف وأربعة مئات وخمسة وعشرون"
+    ],
+
+    a:"ثلاثة آلاف ومئتان وخمسة وأربعون"
+},
+
+/* 4 */
+
+{
+    q:"أي صيغة ممتدة تمثل العدد 5,326؟",
+
+    o:[
+        "5,000 + 300 + 20 + 6",
+        "5,000 + 30 + 20 + 6",
+        "500 + 300 + 20 + 6"
+    ],
+
+    a:"5,000 + 300 + 20 + 6"
+},
+
+/* 5 */
+
+{
+    q:"ما العدد الذي تمثله الصيغة الممتدة: 4,000 + 500 + 30 + 2 ؟",
+
+    o:[
+        "4,532",
+        "4,352",
+        "4,523"
+    ],
+
+    a:"4,532"
+},
+
+/* 6 */
+
+{
+    q:"ما القيمة العددية للرقم 8 في العدد 2,846؟",
+
+    o:[
+        "8",
+        "80",
+        "800"
+    ],
+
+    a:"800"
+},
+
+/* 7 */
+
+{
+    q:"ما القيمة المكانية للرقم 5 في العدد 3,582؟",
+
+    o:[
+        "الآحاد",
+        "العشرات",
+        "المئات"
+    ],
+
+    a:"المئات"
+},
+
+/* 8 */
+
+{
+    q:"ما ناتج الجمع: 245 + 123 ؟",
+
+    o:[
+        "358",
+        "368",
+        "378"
+    ],
+
+    a:"368"
+},
+
+/* 9 */
+
+{
+    q:"ما ناتج الطرح: 586 - 241 ؟",
+
+    o:[
+        "345",
+        "355",
+        "365"
+    ],
+
+    a:"345"
+},
+
+/* 10 */
+
+{
+    q:"ما حاصل الضرب: 6 × 4 ؟",
+
+    o:[
+        "20",
+        "24",
+        "28"
+    ],
+
+    a:"24"
+},
+
+/* 11 */
+
+{
+    q:"ما حاصل الضرب: 7 × 5 ؟",
+
+    o:[
+        "30",
+        "35",
+        "40"
+    ],
+
+    a:"35"
+},
+
+/* 12 */
+
+{
+    q:"لدى أميرة 12 قطعة حلوى تريد توزيعها بالتساوي على 3 أطفال. كم قطعة لكل طفل؟",
+
+    o:[
+        "3",
+        "4",
+        "6"
+    ],
+
+    a:"4"
+},
+
+/* 13 */
+
+{
+    q:"ما ناتج القسمة: 32 ÷ 4 ؟",
+
+    o:[
+        "6",
+        "8",
+        "9"
+    ],
+
+    a:"8"
+},
+
+/* 14 */
+
+{
+    q:"ما العدد الذي يساوي: 2,000 + 400 + 60 + 5 ؟",
+
+    o:[
+        "2,465",
+        "2,645",
+        "2,405"
+    ],
+
+    a:"2,465"
+},
+
+/* 15 */
+
+{
+    q:"مع ندى 350 جنيهًا، اشترت لعبة بـ125 جنيهًا. كم جنيهًا تبقى معها؟",
+
+    o:[
+        "215 جنيهًا",
+        "225 جنيهًا",
+        "235 جنيهًا"
+    ],
+
+    a:"225 جنيهًا"
+}
+
+];
+
+
+/* =====================================================
+   المتغيرات
+===================================================== */
+
+let current = 0;
+let score = 0;
+let hearts = 3;
+let answered = false;
+
+let audioContext = null;
+let musicOn = true;
+let musicTimer = null;
+
+
+/* =====================================================
+   تغيير الشاشة
+===================================================== */
+
+function showScreen(id){
+
+    document.querySelectorAll(".screen")
+    .forEach(screen=>{
+        screen.classList.remove("active");
+    });
+
+    document.getElementById(id)
+    .classList.add("active");
+}
+
+
+/* =====================================================
+   نظام الصوت
+===================================================== */
+
+function initAudio(){
+
+    if(!audioContext){
+
+        audioContext =
+            new(
+                window.AudioContext ||
+                window.webkitAudioContext
+            )();
+
+    }
+
+    if(audioContext.state === "suspended"){
+        audioContext.resume();
+    }
+}
+
+
+/* =====================================================
+   تشغيل نغمة
+===================================================== */
+
+function playNote(
+    frequency,
+    duration,
+    startTime,
+    volume=.04
+){
+
+    if(!audioContext || !musicOn) return;
+
+    const oscillator =
+        audioContext.createOscillator();
+
+    const gain =
+        audioContext.createGain();
+
+    oscillator.type="sine";
+
+    oscillator.frequency.value=
+        frequency;
+
+    gain.gain.setValueAtTime(
+        .001,
+        startTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        volume,
+        startTime+.025
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .001,
+        startTime+duration
+    );
+
+    oscillator.connect(gain);
+
+    gain.connect(
+        audioContext.destination
+    );
+
+    oscillator.start(startTime);
+
+    oscillator.stop(
+        startTime+duration+.02
+    );
+}
+
+
+/* =====================================================
+   الموسيقى الخلفية
+===================================================== */
+
+function playMusic(){
+
+    if(!musicOn || !audioContext) return;
+
+    const melody=[
+
+        523.25,
+        659.25,
+        783.99,
+        659.25,
+
+        587.33,
+        698.46,
+        880,
+        698.46
+
+    ];
+
+    const now=
+        audioContext.currentTime;
+
+    melody.forEach((note,index)=>{
+
+        playNote(
+            note,
+            .27,
+            now+index*.30,
+            .035
+        );
+
+    });
+
+    musicTimer=setTimeout(
+        playMusic,
+        2700
+    );
+}
+
+
+/* =====================================================
+   صوت الإجابة الصحيحة + التصفيق
+===================================================== */
+
+function playCorrectSound(){
+
+    initAudio();
+
+    const now=
+        audioContext.currentTime;
+
+
+    /* نغمة نجاح */
+
+    const successNotes=[
+
+        523.25,
+        659.25,
+        783.99,
+        1046.50
+
+    ];
+
+    successNotes.forEach(
+        (note,index)=>{
+
+            playNote(
+                note,
+                .22,
+                now+index*.08,
+                .13
+            );
+
+        }
+    );
+
+
+    /* تصفيق */
+
+    for(let i=0;i<18;i++){
+
+        const oscillator=
+            audioContext.createOscillator();
+
+        const gain=
+            audioContext.createGain();
+
+        const start=
+            now+
+            .38+
+            Math.random()*.85;
+
+        oscillator.type="square";
+
+        oscillator.frequency.value=
+            800+
+            Math.random()*1500;
+
+        gain.gain.setValueAtTime(
+            .001,
+            start
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            .045,
+            start+.006
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            .001,
+            start+.045
+        );
+
+        oscillator.connect(gain);
+
+        gain.connect(
+            audioContext.destination
+        );
+
+        oscillator.start(start);
+
+        oscillator.stop(
+            start+.055
+        );
+    }
+}
+
+
+/* =====================================================
+   صوت الإجابة الخاطئة
+===================================================== */
+
+function playWrongSound(){
+
+    initAudio();
+
+    const now=
+        audioContext.currentTime;
+
+    const notes=[
+        330,
+        277,
+        220
+    ];
+
+    notes.forEach(
+        (note,index)=>{
+
+            const oscillator=
+                audioContext.createOscillator();
+
+            const gain=
+                audioContext.createGain();
+
+            const start=
+                now+
+                index*.12;
+
+            oscillator.type=
+                "sawtooth";
+
+            oscillator.frequency.value=
+                note;
+
+            gain.gain.setValueAtTime(
+                .001,
+                start
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                .08,
+                start+.02
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                .001,
+                start+.18
+            );
+
+            oscillator.connect(gain);
+
+            gain.connect(
+                audioContext.destination
+            );
+
+            oscillator.start(start);
+
+            oscillator.stop(
+                start+.2
+            );
+
+        }
+    );
+}
+
+
+/* =====================================================
+   زر الموسيقى
+===================================================== */
+
+function toggleMusic(){
+
+    musicOn=!musicOn;
+
+    document.getElementById("musicBtn")
+        .innerText=
+        musicOn ? "🔊" : "🔇";
+
+    if(musicOn){
+
+        initAudio();
+
+        clearTimeout(musicTimer);
+
+        playMusic();
+
+    }else{
+
+        clearTimeout(musicTimer);
+
+    }
+}
+
+
+/* =====================================================
+   بدء اللعبة
+===================================================== */
+
+function startGame(){
+
+    current=0;
+    score=0;
+    hearts=3;
+
+    initAudio();
+
+    clearTimeout(musicTimer);
+
+    playMusic();
+
+    createMap();
+
+    showScreen("mapScreen");
+
+    setTimeout(()=>{
+
+        showScreen("quizScreen");
+
+        loadQuestion();
+
+    },900);
+}
+
+
+/* =====================================================
+   إنشاء الخريطة
+===================================================== */
+
+function createMap(){
+
+    const container=
+        document.getElementById("levels");
+
+    container.innerHTML="";
+
+    questions.forEach(
+        (question,index)=>{
+
+            const level=
+                document.createElement("div");
+
+            level.className="level";
+
+            if(index>0){
+
+                level.classList.add(
+                    "locked"
+                );
+
+            }
+
+            if(index===0){
+
+                level.classList.add(
+                    "current"
+                );
+
+            }
+
+            level.innerText=
+                index+1;
+
+            container.appendChild(level);
+
+        }
+    );
+}
+
+
+/* =====================================================
+   تحميل السؤال
+===================================================== */
+
+function loadQuestion(){
+
+    answered=false;
+
+    const question=
+        questions[current];
+
+    document.getElementById(
+        "levelNumber"
+    ).innerText=
+        current+1;
+
+    document.getElementById(
+        "score"
+    ).innerText=
+        score;
+
+    document.getElementById(
+        "question"
+    ).innerText=
+        question.q;
+
+    document.getElementById(
+        "progress"
+    ).style.width=
+        (current/questions.length*100)+"%";
+
+    updateHearts();
+
+
+    const options=
+        document.getElementById(
+            "options"
+        );
+
+    options.innerHTML="";
+
+
+    const feedback=
+        document.getElementById(
+            "feedback"
+        );
+
+    feedback.className=
+        "feedback";
+
+    feedback.innerHTML="";
+
+
+    document.getElementById(
+        "nextBtn"
+    ).classList.remove(
+        "show"
+    );
+
+
+    question.o.forEach(
+        answer=>{
+
+            const button=
+                document.createElement(
+                    "button"
+                );
+
+            button.className=
+                "option";
+
+            button.innerText=
+                answer;
+
+            button.onclick=()=>{
+                checkAnswer(
+                    button,
+                    answer
+                );
+            };
+
+            options.appendChild(
+                button
+            );
+
+        }
+    );
+}
+
+
+/* =====================================================
+   التحقق من الإجابة
+===================================================== */
+
+function checkAnswer(
+    button,
+    answer
+){
+
+    if(answered) return;
+
+    const question=
+        questions[current];
+
+
+    /* الصحيحة */
+
+    if(answer===question.a){
+
+        answered=true;
+
+        playCorrectSound();
+
+        button.classList.add(
+            "correct"
+        );
+
+        score+=10;
+
+        document.getElementById(
+            "score"
+        ).innerText=
+            score;
+
+
+        const feedback=
+            document.getElementById(
+                "feedback"
+            );
+
+        feedback.className=
+            "feedback show good";
+
+        feedback.innerHTML=
+            "🎉 أحسنتِ يا بطلة!<br>"+
+            "👏 إجابة صحيحة! حصلتِ على ⭐ 10 نقاط";
+
+
+        document.querySelectorAll(
+            ".option"
+        ).forEach(
+            button=>{
+                button.disabled=true;
+            }
+        );
+
+
+        document.getElementById(
+            "nextBtn"
+        ).classList.add(
+            "show"
+        );
+
+
+        updateMap();
+
+    }
+
+
+    /* الخاطئة */
+
+    else{
+
+        playWrongSound();
+
+        button.classList.add(
+            "wrong"
+        );
+
+        button.disabled=true;
+
+        hearts--;
+
+        updateHearts();
+
+
+        const feedback=
+            document.getElementById(
+                "feedback"
+            );
+
+        feedback.className=
+            "feedback show bad";
+
+
+        if(hearts>0){
+
+            feedback.innerHTML=
+                "🍭 أوووه! ليست الإجابة الصحيحة.<br>"+
+                "❤️ لديكِ محاولة أخرى، حاولي مرة ثانية!";
+
+        }
+
+        else{
+
+            answered=true;
+
+            feedback.innerHTML=
+                "💫 انتهت المحاولات.<br>"+
+                "الإجابة الصحيحة هي: "+
+                "<strong>"+
+                question.a+
+                "</strong>";
+
+
+            document.querySelectorAll(
+                ".option"
+            ).forEach(
+                button=>{
+                    button.disabled=true;
+                }
+            );
+
+
+            document.getElementById(
+                "nextBtn"
+            ).classList.add(
+                "show"
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   تحديث الخريطة
+===================================================== */
+
+function updateMap(){
+
+    const levels=
+        document.querySelectorAll(
+            ".level"
+        );
+
+
+    if(levels[current]){
+
+        levels[current]
+            .classList.remove(
+                "current"
+            );
+
+        levels[current]
+            .classList.add(
+                "completed"
+            );
+
+    }
+
+
+    if(levels[current+1]){
+
+        levels[current+1]
+            .classList.remove(
+                "locked"
+            );
+
+        levels[current+1]
+            .classList.add(
+                "current"
+            );
+
+    }
+
+}
+
+
+/* =====================================================
+   تحديث القلوب
+===================================================== */
+
+function updateHearts(){
+
+    let heartsText="";
+
+    for(let i=0;i<3;i++){
+
+        heartsText+=
+            i<hearts
+            ?"❤️"
+            :"🖤";
+
+    }
+
+    document.getElementById(
+        "hearts"
+    ).innerText=
+        heartsText;
+}
+
+
+/* =====================================================
+   السؤال التالي
+===================================================== */
+
+function nextQuestion(){
+
+    current++;
+
+    if(current>=questions.length){
+
+        finishGame();
+
+    }
+
+    else{
+
+        loadQuestion();
+
+    }
+}
+
+
+/* =====================================================
+   النتيجة النهائية
+===================================================== */
+
+function finishGame(){
+
+    document.getElementById(
+        "progress"
+    ).style.width=
+        "100%";
+
+
+    document.getElementById(
+        "finalScore"
+    ).innerText=
+        score;
+
+
+    let title;
+    let stars;
+    let message;
+
+
+    if(score>=140){
+
+        title=
+            "👑 ملكة الرياضيات!";
+
+        stars=
+            "⭐⭐⭐⭐⭐";
+
+        message=
+            "مذهل جدًا! لقد اجتزتِ مملكة الحلوى ببراعة، وأصبحتِ مستعدة لمغامرات الصف الرابع! 🍬🏆";
+
+    }
+
+    else if(score>=110){
+
+        title=
+            "🍭 بطلة الحلوى!";
+
+        stars=
+            "⭐⭐⭐⭐";
+
+        message=
+            "أداء رائع جدًا! لديكِ أساس قوي في الرياضيات، ومع قليل من التدريب ستصبحين ملكة الرياضيات! 👑";
+
+    }
+
+    else if(score>=80){
+
+        title=
+            "🌸 أميرة الرياضيات!";
+
+        stars=
+            "⭐⭐⭐";
+
+        message=
+            "نتيجة جميلة! واصلي التدريب على القيمة المكانية والعمليات الحسابية وستتحسن مهاراتك أكثر. ✨";
+
+    }
+
+    else if(score>=50){
+
+        title=
+            "🍬 مغامرة جيدة!";
+
+        stars=
+            "⭐⭐";
+
+        message=
+            "بداية جيدة! راجعي بعض المهارات ثم عودي إلى مملكة الحلوى لتحقيق نتيجة أفضل. 💗";
+
+    }
+
+    else{
+
+        title=
+            "💗 لا تستسلمي!";
+
+        stars=
+            "⭐";
+
+        message=
+            "كل بطلة تبدأ من أول مستوى. تدربي على الأعداد والعمليات الحسابية وحاولي مرة أخرى! 🌈";
+
+    }
+
+
+    document.getElementById(
+        "resultTitle"
+    ).innerText=
+        title;
+
+    document.getElementById(
+        "finalStars"
+    ).innerText=
+        stars;
+
+    document.getElementById(
+        "resultText"
+    ).innerText=
+        message;
+
+
+    showScreen(
+        "resultScreen"
+    );
+}
+
+
+/* =====================================================
+   إعادة اللعبة
+===================================================== */
+
+function restartGame(){
+
+    clearTimeout(
+        musicTimer
+    );
+
+    showScreen(
+        "startScreen"
+    );
+}
+
+</script>
+
+</body>
+</html>
